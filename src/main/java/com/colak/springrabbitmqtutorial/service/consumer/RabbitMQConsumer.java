@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 public class RabbitMQConsumer {
 
     @RabbitListener(queues = "queue1")
-    public void receive(String in) throws InterruptedException {
+    public void receive(String in) {
         log.info(" [x] Received  in queue 1'{}", in);
-        Thread.sleep(3000);
         log.info("Done queue 1");
     }
 

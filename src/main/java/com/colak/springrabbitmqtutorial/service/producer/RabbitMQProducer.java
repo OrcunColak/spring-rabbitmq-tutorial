@@ -21,11 +21,18 @@ public class RabbitMQProducer {
     @Value("${rabbitmq.exchange1}")
     String exchange1;
 
+    @Value("${rabbitmq.routingkey1}")
+    String routingKey1;
+
     @Value("${rabbitmq.exchange2}")
     String exchange2;
 
     public void sendMessage(String message) {
-        rabbitTemplate.convertAndSend(exchange1, message);
+        // Send with routing
+        rabbitTemplate.convertAndSend(exchange1, routingKey1, message);
+
+        // Send directly to queue without routing
+        // rabbitTemplate.convertAndSend("queue1", message);
         log.info(" [x] Sent in queue1 '{}'", message);
     }
 

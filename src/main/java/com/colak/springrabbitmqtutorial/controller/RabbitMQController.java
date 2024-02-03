@@ -1,4 +1,4 @@
-package com.colak.springrabbitmqtutorial.service.controller;
+package com.colak.springrabbitmqtutorial.controller;
 
 import com.colak.springrabbitmqtutorial.service.producer.RabbitMQProducer;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class RabbitMQController {
 
     private final RabbitMQProducer rabbitmqProducer;
 
-    // http:localhost:8080/api/rabbitmq/sendMessage/Hello
+    // http://localhost:8080/api/rabbitmq/sendMessage/Hello
     @GetMapping("/sendMessage/{message}")
     public ResponseEntity<String> testRabbitmq(@PathVariable String message) {
         rabbitmqProducer.sendMessage(message);

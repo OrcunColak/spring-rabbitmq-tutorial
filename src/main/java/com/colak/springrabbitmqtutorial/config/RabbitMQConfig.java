@@ -1,7 +1,8 @@
-package com.colak.springrabbitmqtutorial.service.config;
+package com.colak.springrabbitmqtutorial.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Declarables;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,21 +12,27 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Bean
-    Queue queue1(@Value("${rabbitmq.queue1}") String queueName) {
-        return new Queue(queueName, false);
-    }
+    @Value("${rabbitmq.queue1}")
+    String queue1;
 
-    @Bean
-    DirectExchange exchange1(@Value("${rabbitmq.exchange1}") String exchange) {
-        return new DirectExchange(exchange);
-    }
+    @Value("${rabbitmq.exchange1}")
+    String exchange1;
 
+    @Value("${rabbitmq.routingkey1}")
+    String routingKey1;
+
+    /**
+     * This is another way of declaring queue + exchange + routing key
+     */
     @Bean
-    Binding binding1(Queue queue1,
-                     DirectExchange exchange1,
-                     @Value("${rabbitmq.routingkey1}") String routingKey) {
-        return BindingBuilder.bind(queue1).to(exchange1).with(routingKey);
+    public Declarables topicBindings1() {
+        var queue = new Queue(queue1, false);
+        var exchange = new DirectExchange(exchange1);
+        return new Declarables(queue, exchange, BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with(routingKey1)
+        );
     }
 
     @Bean

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,12 +18,14 @@ public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final Queue queue1;
+    @Value("${rabbitmq.exchange1}")
+    String exchange1;
 
-    private final Queue queue2;
+    @Value("${rabbitmq.exchange2}")
+    String exchange2;
 
     public void sendMessage(String message) {
-        rabbitTemplate.convertAndSend(queue1.getName(), message);
+        rabbitTemplate.convertAndSend(exchange1, message);
         log.info(" [x] Sent in queue1 '{}'", message);
     }
 
@@ -33,7 +35,7 @@ public class RabbitMQProducer {
                 .setHeader("ContentType", file.getContentType())
                 .build();
 
-        rabbitTemplate.convertAndSend(queue2.getName(), message);
+        rabbitTemplate.convertAndSend(exchange2, message);
         log.info(" [x] Sent in queue2 '{}'", message);
     }
 }

@@ -23,6 +23,6 @@ public class RabbitMQConsumer {
         // Process the received file bytes and contentType as needed
         // You can save the file, perform further processing, etc.
 
-        log.info("Received file with content type: " + contentType);
+        log.info("Received file with content type: {}", contentType);
     }
 }
